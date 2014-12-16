@@ -33,8 +33,9 @@
 					注&nbsp;&nbsp;册
 				</h2>
 				<input tabindex="1" type="text" name="mobile" class="form-control" placeholder="请输入您的手机号码" autocomplete="off"/>
-				<input tabindex="2" type="text" name="vcode" class="form-control" placeholder="请输入您的邀请码" autocomplete="off"/>
-				<input tabindex="3" type="password" name="password" class="form-control" placeholder="请输入您的密码" autocomplete="off"/>
+				<input tabindex="2" type="text" name="mobile" class="form-control" placeholder="这里是图形验证码" autocomplete="off"/>
+				<input tabindex="3" type="text" name="vcode" class="form-control" placeholder="请输入您的邀请码" autocomplete="off"/><a href="javascript:void(0);" class="S_send_vcode">发送短信验证码</a>
+				<input tabindex="4" type="password" name="password" class="form-control" placeholder="请输入您的密码" autocomplete="off"/>
 				<div class="text-center form-group">
 					<button id="S_reg_page" class="btn btn-lg btn-success btn-inline" type="button">
 						&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;册&nbsp;&nbsp;ShiJianNe

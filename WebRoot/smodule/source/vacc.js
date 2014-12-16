@@ -11,7 +11,18 @@ define(function(require, exports, module) {
 	exports.sendCode = function() {
 		// 验证码保存到数据库中，判断用户验证码有效期
 
-		$.ajax( {} );
+		$.ajax({
+			type : 'post',
+			url : '/reg/sendVcode',
+			dataType : 'json',
+			data : params,
+			success : function(result, status) {
+				
+			},
+			error : function() {
+				$.unblockUI();
+			}
+		});
 	};
 
 	// 判断验证码是否正确
