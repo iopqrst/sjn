@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    
+  <description>x11 project</description>
+  <display-name>x11 tags</display-name>
+  <tlib-version>1.0</tlib-version>
+  <short-name>x11</short-name>
+
+  <tag>
+    <name>des</name>
+    <tag-class>com.sjn.tags.X11DesTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+        <name>value</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+    	<description>encrypt / decrypt</description>
+        <name>fn</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <name>keys</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>timeline</name>
+    <tag-class>com.sjn.tags.X11TimelineTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+        <name>val</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>category</name>
+    <tag-class>com.sjn.tags.X11CategoryTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+    	<description>fn: style or name</description>
+        <name>fn</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <name>value</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+</taglib>

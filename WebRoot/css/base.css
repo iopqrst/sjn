@@ -1,0 +1,177 @@
+body,h1,h2,h3,h4,h5,p,dl,dd,ul,ol,form,input,textarea,th,td,select { margin:0; padding:0; }
+em { font-style:normal; }
+li { list-style:none; }
+a { text-decoration:none; }
+a:hover {text-decoration:underline;}
+img { border:none; vertical-align:top; }
+table { border-collapse:collapse; }
+input,textarea { outline:none; }
+textarea { resize:none; overflow:auto; }
+body { font-size:12px; font-family:"微软雅黑";}
+/* end reset */
+
+/* 定义了所有table的样式 （临时）
+table {border-collapse:collapse;}
+table, td ,th{border: 1px solid green;}
+td {text-align:center;}*/
+
+/* public */
+.clear { zoom:1; }
+.clear:after { content:''; display:block; clear:both; }
+.fl { float:left; }
+.fr { float:right; }
+/*html { overflow-y:-moz-scrollbars-vertical; min-height:101% } */ /*在Firefox下始终显示滚动条*/
+
+.sjn-content {padding:70px; }
+
+/* life item add or modify */
+#S_item_category {background:#f0f0f0;}
+#S_item_category option{color:#000; font-weight:bolder;}
+
+#S_timeLineDialog {border:1px solid #ccc; border-top: none;}
+.time_polt_split {width:100%; clear:both;}
+.time_polt_split h3 {}
+.time_polt_split ul { margin-left:25px;}
+.time_polt_split ul li {height:30px; line-height:30px; text-align:center; width:60px; float:left; }			
+.time_polt_split li a {text-decoration:none;}
+.time_polt_split li a:hover {text-decoration: underline; font-size:18px; color:#ff0000; }
+.time_polt_split li a:active {-webkit-transition: .3s all ease ; text-decoration: underline; font-weight:bolder; font-size:18px; color:#030303;}
+
+.time_polt_split li a.disabled {text-decoration:line-through;}
+
+
+
+/*---------------分页样式（临时）----------------------*/
+.pagination {font-size: 80%;}
+        
+.pagination a {
+    text-decoration: none;
+	border: solid 1px #AAE;
+	color: #15B;
+}
+
+.pagination a, .pagination span {
+    display: block;
+    float: left;
+    padding: 0.3em 0.5em;
+    margin-right: 5px;
+	margin-bottom: 5px;
+	min-width:1em;
+	text-align:center;
+}
+
+.pagination .current {
+    background: #26B;
+    color: #fff;
+	border: solid 1px #AAE;
+}
+
+.pagination .current.prev, .pagination .current.next{
+	color:#999;
+	border-color:#999;
+	background:#fff;
+}
+
+.pagination #pageInput{
+	float: left;
+	border: 1px solid #AAAAEE;
+    margin-right: 5px;
+    height:22px;
+    width:40px;
+}
+
+.pagination .tip{
+	color: #1155BB;
+}
+/*---------------分页样式（临时）----------------------*/
+
+/*------------color picker (begin)---------------*/
+#jquery-colour-picker {
+	background: #fafafa;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff),
+		to(#eee) );
+	width: 180px;
+	padding: 10px 5px 5px 10px;
+	border: 1px solid #666;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+	z-index: 99;
+}
+
+#jquery-colour-picker h2 {
+	margin: 0 0 5px 0;
+	font-size: 14px;
+}
+
+#jquery-colour-picker ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none; +
+	zoom: 1;
+}
+/*------------color picker (end) ---------------*/
+#jquery-colour-picker ul:after {
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+	clear: both;
+}
+
+#jquery-colour-picker ul li {
+	float: left;
+	margin: 0 5px 5px 0;
+}
+
+#jquery-colour-picker ul li a {
+	display: block;
+	width: 13px;
+	height: 13px;
+	text-decoration: none;
+	text-indent: -100000px;
+	outline: 0;
+	border: 1px solid #aaa;
+}
+
+#jquery-colour-picker ul li a:hover {
+	border-color: #fff;
+	/*
+	-webkit-transform:scale(5);
+	-moz-transform:scale(5);
+	-ms-transform:scale(5);
+	-o-transform:scale(5);
+	transform:scale(5);
+	
+	-webkit-transition: 0.8s all ease;
+	-moz-transition: 0.8s all ease;
+	-o-transition: 0.8s all ease;
+	transition: 0.8s all ease;*/
+}
+
+/* -------------- 页面整体布局开始---------------*/
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background-color: #f5f5f5;
+}
+
+select.option-lg option{
+	height:35px;
+	line-height:35px;
+}
+
+select.option-md option{
+	height:30px;
+	line-height:30px;
+}
+
+select.option-sm option {
+	height:25px;
+	line-height:25px;
+}
