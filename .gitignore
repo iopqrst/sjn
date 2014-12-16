@@ -10,6 +10,7 @@ org.eclipse.wst.jsdt.ui.superType.container
 org.eclipse.wst.jsdt.ui.superType.name
 WebRoot/META-INF/MANIFEST.MF
 WebRoot/WEB-INF/classes/
+WebRoot/WEB-INF/lib/
 WebRoot/smodule/node_modules/
 
 
