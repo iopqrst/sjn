@@ -54,14 +54,14 @@
 							<span class="caret"></span> </a>
 						<ul class="dropdown-menu" role="menu">
 							<li>
-								<a href="#"><span class="glyphicon glyphicon-asterisk"></span>&nbsp;个人信息</a>
+								<a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;个人信息</a>
 							</li>
 							<li>
-								<a href="#"><span class="glyphicon glyphicon-asterisk"></span>&nbsp;修改密码</a>
+								<a href="#"><span class="glyphicon glyphicon-lock"></span>&nbsp;修改密码</a>
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="/login/logout">退出</a>
+								<a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;退出</a>
 							</li>
 						</ul>
 					</li>
