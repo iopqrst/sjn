@@ -43,6 +43,10 @@
 									<input tabindex="1" type="text" class="form-control" 
 										id="userphone" name="mobile" value="${mobile }" 
 										placeholder="请输入您的手机号码" autocomplete="off"/>
+										
+<!-- 									<span id="S_mobile_tip" class="base_v_msg_tip"> -->
+<!-- 										手机号码格式不正确 -->
+<!-- 									</span> -->
 								</div>
 							</div>
 						</div>
@@ -58,6 +62,23 @@
 						</div>
 						<div class="form-group">
 							<div class="col-md-12">
+								<div class="control-wrapper">
+									<label for="password" class="control-label fa-label">
+									<span class="glyphicon glyphicon-lock"></span></label> 
+									<div class="input-group">
+										<input tabindex="23" type="text" name="vcode"
+											class="form-control" id="password" placeholder="请输入您的验证码"/>
+											
+										<span class="input-group-btn">
+									        <button id="S_get_vcode" class="btn btn-default" type="button">获取验证码</button>
+									    </span>
+									    
+								    </div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
 								<div class="checkbox control-wrapper">
 									<label><input type="checkbox" id="S_rememberme"/>记住密码 </label>
 								</div>
@@ -65,16 +86,15 @@
 						</div>
 						<div class="form-group">
 							<div class="col-md-12">
-								<div class="control-wrapper">
-									<input type="button" id="S_reg_page" value="登&nbsp;&nbsp;录" class="btn btn-info">
-									<a href="forgot-password.html" class="text-right pull-right">忘记密码？</a>
+								<div class="control-wrapper text-center">
+									<input type="button" id="S_reg_page" value="注&nbsp;&nbsp;册" class="btn btn-success">
 								</div>
 							</div>
 						</div>
 					</form>
 					<div class="text-center">
-						<a href="/reg" class="templatemo-create-new">
-						注册 ShiJianNe <span class="glyphicon glyphicon-hand-right"></span>
+						<a href="/login" class="templatemo-create-new">
+						登录&nbsp;<span class="glyphicon glyphicon-hand-right"></span>
 						</a>
 					</div>
 				</div>

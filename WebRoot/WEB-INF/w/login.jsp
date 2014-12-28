@@ -65,8 +65,8 @@
 						<div class="form-group">
 							<div class="col-md-12">
 								<div class="control-wrapper">
-									<input type="button" id="S_page_login" value="登&nbsp;&nbsp;录" class="btn btn-info">
-									<a href="forgot-password.html" class="text-right pull-right">忘记密码？</a>
+									<input type="button" id="S_page_login" value="登&nbsp;&nbsp;录" class="btn btn-success">
+									<a href="/forgotPwd" class="text-right pull-right">忘记密码？</a>
 								</div>
 							</div>
 						</div>

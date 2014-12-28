@@ -5,33 +5,15 @@ define(function(require, exports, module) {
 
 	var $ = require('jquery');
 	var x = require('./xbase');
-	var bb = require('bootbox');
-
-	// 发送验证码
-	exports.sendCode = function() {
-		// 验证码保存到数据库中，判断用户验证码有效期
-
-		$.ajax({
-			type : 'post',
-			url : '/reg/sendVcode',
-			dataType : 'json',
-			data : params,
-			success : function(result, status) {
-				
-			},
-			error : function() {
-				$.unblockUI();
-			}
-		});
-	};
 
 	// 判断验证码是否正确
 	exports.vcode = function() {
 		
 	};
 	
-	
-	
+	var $mobile = $(":input[name='mobile']");
+	var $password = $(":input[name='password']");
+	var $vcode = $(":input[name='vcode']");
 	// 登录验证
 	exports.v = function(page) {
 		
@@ -40,37 +22,25 @@ define(function(require, exports, module) {
 				run : function ($obj, msg) {
 					var vstate = $obj.data('v_state');
 					if(vstate) return;
-					$obj.removeClass('alert-danger');
 					if(msg) {
-						$obj.popover('destroy')
-							.popover({'content': msg,
-									'trigger':'manual',
-									'placement':'auto'}).popover('show');
+						validateFn.createTips($obj , msg);
 					}
 				}
 			},
 			error : {
 				run : function ($obj, msg) {
 					$obj.data('v_state', 1);
-					$obj.addClass('alert-danger');
 					if(msg) {
-						$obj.popover('destroy')
-							.popover({'content': msg,
-								'trigger':'manual',
-								'placement':'auto'}).popover('show');
+						validateFn.createTips($obj , msg);
 					}
 				}
 			},
 			succeed : {
 				run : function ($obj, msg) {
 					$obj.data('v_state', 2);
-					$obj.removeClass('alert-danger');
-					$obj.popover('destroy');
 				}
 			},
 			destroy : function($obj){
-				$obj.removeClass('alert-danger');
-				$obj.popover('destroy');
 			},
 			formSubmit : function ($eles) {
 		        var bool = true;
@@ -85,13 +55,55 @@ define(function(require, exports, module) {
 		            }
 		        }
 		        return bool;
+		    },
+		    createTips: function($obj, msg) {
+		    	var $parent = $obj.parent();
+		    	if($obj.attr("name") == "vcode") {
+		    		if($parent.parent().find('.base_v_msg_tip').length < 1) {
+		    			$parent.parent().append('<span class="base_v_msg_tip vcode">'+ msg +'</span>');
+		    		}
+		    	} else {
+		    		if($parent.find('.base_v_msg_tip').length < 1) {
+		    			$parent.append('<span class="base_v_msg_tip">'+ msg +'</span>');
+		    		}
+		    	}
+		    },
+		    destoryTips: function($obj) {
+		    	console.info($obj.parent());
+		    	$obj.parent().find(".base_v_msg_tip").remove();
+		    	$obj.parent().parent().find(".base_v_msg_tip").remove();
+		    },
+		    sendVcode: function () {
+		    	
+		    	if(x.isEmpty($mobile.val()) || !x.gisMobile($mobile.val())) {
+					validateFn.error.run($mobile, validMsg.mobile.error);
+					return;
+				} 
+		    	
+		    	$.ajax({
+					type : 'post',
+					url : '/reg/sendVcode',
+					dataType : 'json',
+					data : {'mobile': $mobile.val().trim()},
+					success : function(result, status) {
+						console.info(result);
+						if(result) { //code=1 成功
+							alert(result.msg);
+						} else {
+							alert('验证码发送失败，请稍后再试');
+						}
+					},
+					error : function() {
+						$.unblockUI();
+					}
+				});
 		    }
 		};
 		
 		var validMsg = {
 			mobile : {
-				empty : '请输入您的手机号码',
-				error : '请输入正确的手机号',
+				empty : '请输入11位手机号码',
+				error : '手机号码格式不正确',
 				exist : '手机号已注册，请直接登录'
 			},
 			pwd : {
@@ -99,14 +111,10 @@ define(function(require, exports, module) {
 				error : '密码长度应在6-20位字符之间',
 			},
 			code : {
-				empty : '请输入您的邀请码',
-				error : '您输入的邀请码不正确'
+				empty : '请输入短信验证码',
+				error : '短信验证码不正确'
 			}
 		};
-		
-		var $mobile = $(":input[name='mobile']");
-		var $password = $(":input[name='password']");
-		var $vcode = $(":input[name='vcode']");
 
 		$.fn.extend({
 			
@@ -144,7 +152,6 @@ define(function(require, exports, module) {
 				
 				if(x.isEmpty(this.val())) {
 					validateFn.error.run(this, validMsg.pwd.empty);
-					//validateFn.destroy(this);
 				} else if(!x.gisPwd(this.val())) {
 					validateFn.error.run(this, validMsg.pwd.error);
 				} else {
@@ -208,6 +215,10 @@ define(function(require, exports, module) {
 		$mobile.on('blur', function(){
 			$mobile.vmobile();
 		});
+		
+		$mobile.on('keyup', function(){
+			validateFn.destoryTips($mobile);
+		});
 
 		$password.on('focus', function(){
 			validateFn.onFocus.run($password, validMsg.pwd.empty)
@@ -217,6 +228,10 @@ define(function(require, exports, module) {
 			$password.vpassword();
 		});
 		
+		$password.on('keyup', function(){
+			validateFn.destoryTips($password);
+		});
+		
 		$vcode.on('focus', function(){
 			validateFn.onFocus.run($vcode, validMsg.code.empty);
 		});
@@ -224,6 +239,12 @@ define(function(require, exports, module) {
 		$vcode.on('blur', function(){
 			$vcode.vcode();
 		});
+		
+		$vcode.on('keyup', function(){
+			validateFn.destoryTips($vcode);
+		});
+		
+		$("#S_get_vcode").on('click', validateFn.sendVcode);
 		
 		$("#S_page_login").on('click', function(){
 			if(validateFn.formSubmit([$mobile, $password])) {
@@ -236,10 +257,7 @@ define(function(require, exports, module) {
 				document.forms[0].submit();
 			}
 		});
-		
-		setTimeout(function(){
-			$mobile.val().length == 0 && $mobile.trigger('focus');
-		}, 3000);
+
 		return;
 	};
 

@@ -83,6 +83,25 @@ h1 {
 	text-decoration: none;
 }
 
+.base_v_msg_tip {
+	height: 24px;
+	line-height: 24px;
+	font-size: 12px;
+	color: #ff0000;
+	border: 1px solid #f9f1bf;
+	position: absolute;
+	background: #fdfae6;
+	top: 5px;
+	right: 5px;
+	padding: 0px 8px;
+	border-radius: 5px;
+}
+
+.base_v_msg_tip.vcode {
+	right:100px;
+	z-index:99999;
+}
+
 @media screen and (max-width: 767px) {
 	.templatemo-container {
 		padding: 15px;
@@ -93,5 +112,5 @@ h1 {
 }
 
 @media screen and (max-width: 991px) {
-	
 }
+

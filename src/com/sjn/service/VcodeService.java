@@ -26,18 +26,18 @@ public class VcodeService extends BaseService {
 	public String sendVcode(String mobile) {
 		JSONObject jo = new JSONObject();
 		
+		if(StringUtils.isEmpty(mobile)) {
+			jo.put("code", Constant.INTERFACE_PARAMAS_ERROR);
+			jo.put("msg", "请输入您的手机号");
+			return jo.toString();
+		}
+		
 		if(StringUtils.isMobile(mobile)) {
 			jo.put("code", Constant.INTERFACE_PARAMAS_ERROR);
 			jo.put("msg", "请输入正确的手机号");
 			return jo.toString();
 		}
 		
-		if(StringUtils.isEmpty(mobile)) {
-			jo.put("code", Constant.INTERFACE_PARAMAS_ERROR);
-			jo.put("msg", "请输入您的手机号");
-			return jo.toString();
-		}
-
 		// 1. 从数据库中获取该手机号用户在10分钟之内发送短信次数
 		// 如果小于等于5，则可以再次发送，否则告知页面发送短信频繁
 		
@@ -48,7 +48,7 @@ public class VcodeService extends BaseService {
 		Record record = Db.findFirst(querySql, new Object[] { mobile,
 				tenMinsAgo });
 
-		if (record.getLong("total") >= 5) {
+		if (record.getLong("total") >= 2) {
 			// TODO 发送太频繁了...
 			jo.put("code", Constant.INTERFACE_FAIL);
 			jo.put("msg", "验证码发送太频繁了，请稍后再试");
@@ -65,7 +65,7 @@ public class VcodeService extends BaseService {
 				if (0 == result) { //短信发送成功
 					// 记录结果
 					if(addRecord(mobile, vcode)) {
-						log.info(">>>>>>>>>>>>>>>>>>> 短信验证码发送成功");
+						log.info(">>>>>>>>>>>>>>>>>>> 短信验证码发送成功:" + vcode);
 					}
 					break;
 				}
@@ -75,7 +75,7 @@ public class VcodeService extends BaseService {
 			
 			if(0 == result) {
 				jo.put("code", Constant.INTERFACE_SUCCESS);
-				jo.put("msg", "验证码发送太频繁了，请稍后再试");
+				jo.put("msg", "短信验证码发送成功，请注意查收您的短信");
 			} else {
 				jo.put("code", Constant.INTERFACE_FAIL);
 				jo.put("msg", "获取短信验证码失败，请稍后再试");

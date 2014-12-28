@@ -177,6 +177,9 @@ public class ContextUtils {
 
 			if (ip.equals(newIp) && userAgent.equals(newUserAgent)
 					&& day <= 365) {
+				
+				//TODO 365时间需要修改一下
+					// 是不是每次验证通过以后都要修改一下cookie中的时间值？？？
 
 				EhcacheFactoryUtils cacheFactory = EhcacheFactoryUtils
 						.getInstance();
