@@ -3,13 +3,11 @@ package com.sjn.service;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jfinal.aop.Before;
-import com.jfinal.config.Constants;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -62,31 +60,6 @@ public class WinnerService extends BaseService {
 		return winner;
 	}
 
-	private void saveToCache(Winner winner) {
-		// 缓存
-		EhcacheFactoryUtils cacheFactory = EhcacheFactoryUtils.getInstance();
-
-		cacheFactory.add(EhcacheFactoryUtils.cache_name_system,
-				ParamInit.cacheStart_winner + winner.getStr("uid"), winner);
-		cacheFactory.add(EhcacheFactoryUtils.cache_name_system,
-				ParamInit.cacheStart_winner + winner.getStr("mobile"), winner);
-	}
-
-	/**
-	 * 为用户生成默认的时间轴时间
-	 * 
-	 * @param winner
-	 */
-	private void initTimeline(Winner winner) {
-		Record r = new Record();
-		r.set("uid", winner.getStr("uid"));
-		r.set("beginPolt", "6.5");
-		r.set("endPolt", "23.5");
-
-		TimelineService timelineService = new TimelineService();
-		timelineService.generateTimeline(r);
-	}
-
 	public int validateWinner(HttpServletRequest request,
 			HttpServletResponse response, String mobile, String password,
 			boolean autoLogin) {
@@ -99,13 +72,7 @@ public class WinnerService extends BaseService {
 		if (null != obj) {
 			winner = (Winner) obj;
 		} else {
-			String sql = "select * from sjn_winner where mobile = ? order by createTime asc limit 1";
-
-			// List<Winner> winList = Winner.dao.findByCache(
-			// EhcacheFactoryUtils.cache_name_system,
-			// ParamInit.cacheStart_winner + mobile, sql, mobile);
-
-			Winner win = Winner.dao.findFirst(sql, mobile);
+			Winner win = queryWinnerByMobile(mobile);
 
 			if (null != win) { // 存在该用户
 				winner = win;
@@ -125,6 +92,7 @@ public class WinnerService extends BaseService {
 		int errorCount = winner.getInt("errorcount");
 		int passErrorCount = (Integer) CommonConfig
 				.getParamMapValue(Constant.config_passErrorCount_key);
+		
 		if (errorCount >= passErrorCount) {
 			Date stopDate = winner.getDate("forbidTime");
 			int hourSpace = DateUtils.getDateHourSpace(new Date(), stopDate);
@@ -137,6 +105,8 @@ public class WinnerService extends BaseService {
 						.update(
 								" update sjn_winner w set w.forbidTime=null, w.errorcount=0 where w.uid = ? ",
 								winner.getStr("uid"));
+				
+				updateWinnerCache(winner.getStr("mobile"));
 			}
 		}
 
@@ -162,6 +132,9 @@ public class WinnerService extends BaseService {
 					.update(
 							" update sjn_winner w set w.forbidTime = ? ,w.errorcount = ? where w.uid = ? ",
 							new Date(), errorCount + 1, winner.get("uid"));
+			
+			updateWinnerCache(winner.getStr("mobile"));
+			
 			return Constant.login_info_pwd_wrong;
 		}
 	}
@@ -174,6 +147,66 @@ public class WinnerService extends BaseService {
 		String sql = "select count(*) total from sjn_winner where mobile = ?";
 		Record r = Db.findFirst(sql, mobile);
 		return r.getLong("total");
+	}
+	
+	/**
+	 * 保存到缓存中
+	 * @param winner
+	 */
+	private void saveToCache(Winner winner) {
+		// 缓存
+		EhcacheFactoryUtils cacheFactory = EhcacheFactoryUtils.getInstance();
+
+		cacheFactory.add(EhcacheFactoryUtils.cache_name_system,
+				ParamInit.cacheStart_winner + winner.getStr("uid"), winner);
+		cacheFactory.add(EhcacheFactoryUtils.cache_name_system,
+				ParamInit.cacheStart_winner + winner.getStr("mobile"), winner);
+	}
+
+	/**
+	 * 为用户生成默认的时间轴时间
+	 * 
+	 * @param winner
+	 */
+	private void initTimeline(Winner winner) {
+		Record r = new Record();
+		r.set("uid", winner.getStr("uid"));
+		r.set("beginPolt", "6.5");
+		r.set("endPolt", "23.5");
+
+		TimelineService timelineService = new TimelineService();
+		timelineService.generateTimeline(r);
+	}
+	
+	/**
+	 * 根据手机号查询用户信息
+	 * @param mobile
+	 * @return
+	 */
+	private Winner queryWinnerByMobile(String mobile) {
+		String sql = "select * from sjn_winner where mobile = ? and status = 0 order by createTime asc limit 1";
+
+		Winner win = Winner.dao.findFirst(sql, mobile);
+		return win;
+	}
+	
+	/**
+	 * 更新用户缓存
+	 * @param mobile
+	 */
+	private void updateWinnerCache(String mobile) {
+		
+		Winner winner = queryWinnerByMobile(mobile);
+		
+		if(null != winner) {
+			// 缓存
+			EhcacheFactoryUtils cacheFactory = EhcacheFactoryUtils.getInstance();
+
+			cacheFactory.update(EhcacheFactoryUtils.cache_name_system,
+					ParamInit.cacheStart_winner + winner.getStr("uid"), winner);
+			cacheFactory.update(EhcacheFactoryUtils.cache_name_system,
+					ParamInit.cacheStart_winner + winner.getStr("mobile"), winner);
+		}
 	}
 
 }

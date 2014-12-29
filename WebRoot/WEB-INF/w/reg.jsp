@@ -67,7 +67,7 @@
 									<span class="glyphicon glyphicon-lock"></span></label> 
 									<div class="input-group">
 										<input tabindex="23" type="text" name="vcode"
-											class="form-control" id="password" placeholder="请输入您的验证码"/>
+											class="form-control" id="vcode" placeholder="请输入您的验证码"/>
 											
 										<span class="input-group-btn">
 									        <button id="S_get_vcode" class="btn btn-default" type="button">获取验证码</button>

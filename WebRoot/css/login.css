@@ -99,7 +99,7 @@ h1 {
 
 .base_v_msg_tip.vcode {
 	right:100px;
-	z-index:99999;
+	z-index:1000;
 }
 
 @media screen and (max-width: 767px) {

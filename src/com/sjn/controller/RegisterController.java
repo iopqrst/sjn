@@ -59,4 +59,11 @@ public class RegisterController extends BaseController {
 		renderJson(codeService.sendVcode(getPara("mobile")));
 	}
 	
+	/**
+	 * 短信校验码校验
+	 */
+	public void validVcode() {
+		renderJson(codeService.validVcode(getPara("mobile"), getPara("vcode")));
+	}
+	
 }

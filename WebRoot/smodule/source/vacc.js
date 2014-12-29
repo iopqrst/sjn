@@ -6,11 +6,6 @@ define(function(require, exports, module) {
 	var $ = require('jquery');
 	var x = require('./xbase');
 
-	// 判断验证码是否正确
-	exports.vcode = function() {
-		
-	};
-	
 	var $mobile = $(":input[name='mobile']");
 	var $password = $(":input[name='password']");
 	var $vcode = $(":input[name='vcode']");
@@ -40,12 +35,10 @@ define(function(require, exports, module) {
 					$obj.data('v_state', 2);
 				}
 			},
-			destroy : function($obj){
-			},
 			formSubmit : function ($eles) {
 		        var bool = true;
 		        for (var i = 0; i < $eles.length; i++) {
-		            if ($eles[i].data("v_state") == 2) {
+		            if ($eles[i].data("v_state") == 2) { // 所有v_state = 2时 ，验证通过
 		                bool = true;
 		            } else {
 		                bool = false;
@@ -54,6 +47,7 @@ define(function(require, exports, module) {
 		                //break;
 		            }
 		        }
+		        console.info('bool = ' + bool);
 		        return bool;
 		    },
 		    createTips: function($obj, msg) {
@@ -74,8 +68,14 @@ define(function(require, exports, module) {
 		    	$obj.parent().parent().find(".base_v_msg_tip").remove();
 		    },
 		    sendVcode: function () {
+		    	// mobile empty
+		    	if(x.isEmpty($mobile.val())) {
+					validateFn.error.run($mobile, validMsg.mobile.empty);
+					return;
+				} 
 		    	
-		    	if(x.isEmpty($mobile.val()) || !x.gisMobile($mobile.val())) {
+		    	// mobile pattern error
+		    	if(!x.gisMobile($mobile.val())) {
 					validateFn.error.run($mobile, validMsg.mobile.error);
 					return;
 				} 
@@ -107,12 +107,13 @@ define(function(require, exports, module) {
 				exist : '手机号已注册，请直接登录'
 			},
 			pwd : {
-				empty : '6-20位字符，可使用数字字母符号组合',
+				empty : '6-20位字符组合',
 				error : '密码长度应在6-20位字符之间',
 			},
 			code : {
 				empty : '请输入短信验证码',
-				error : '短信验证码不正确'
+				error : '验证码不正确',
+				params_error: '手机号或者验证码不能为空'
 			}
 		};
 
@@ -129,7 +130,6 @@ define(function(require, exports, module) {
 				
 				if(x.isEmpty(this.val())) {
 					validateFn.error.run(this, validMsg.mobile.empty);
-					//validateFn.destroy(this);
 				} else if(!x.gisMobile(this.val())) {
 					validateFn.error.run(this, validMsg.mobile.error);
 				} else {
@@ -169,17 +169,20 @@ define(function(require, exports, module) {
 				
 				if(x.isEmpty(this.val())) {
 					validateFn.error.run(this, validMsg.code.empty);
-					//validateFn.destroy(this);
-				} else if(1120648 != parseInt(this.val(), 16)) {
+				} else if($.trim(this.val()).length != 6) {
 					validateFn.error.run(this, validMsg.code.error);
 				} else {
 					$vcode.data('primaryData', $vcode.val());
-					validateFn.succeed.run($vcode);
+
+					_validVcode();
 				} 
 			}
 			
 		});
 		
+		/**
+		 * 验证手机号唯一性
+		 */
 		var _uniqueMobile = function() {
 			var params = {
 				'mobile' : $mobile.val(),
@@ -199,11 +202,45 @@ define(function(require, exports, module) {
 						} else if(2 == result.status) {// 可用
 							validateFn.succeed.run($mobile);
 						}
-						$mobile.data('v_state', result.status);
 					};
 					
 				},
 				error : function() {
+					$mobile.data('v_state', -1); //异常
+				}
+			});
+		};
+		
+		/**
+		 * 验证短信校验码
+		 */
+		var _validVcode = function() {
+			var params = {
+				'mobile' : $mobile.val(),
+				'vcode' : $vcode.val(),
+				'ssid' : new Date().getTime()
+			};
+			
+			$.ajax( {
+				url : '/reg/validVcode/stoken-s000',
+				type : 'post',
+				data : params,
+				dataType : 'json',
+				success : function(result) {
+					
+					if(result) {
+						if (1 == result.code) {// 正确
+							validateFn.succeed.run($vcode);
+						} else if (0 == result.code) {// 验证码不正确
+							validateFn.error.run($vcode, validMsg.code.error);
+						} else if (-3 == result.code) {
+							validateFn.error.run($vcode, validMsg.code.params_error);
+						}
+					};
+					
+				},
+				error : function() {
+					$vcode.data('v_state', -1); //异常
 				}
 			});
 		};
@@ -253,7 +290,7 @@ define(function(require, exports, module) {
 		});
 		
 		$("#S_reg_page").on('click', function(){
-			if(validateFn.formSubmit([$mobile, $vcode, $password])) {
+			if(validateFn.formSubmit([$mobile, $password, $vcode])) {
 				document.forms[0].submit();
 			}
 		});
