@@ -12,7 +12,6 @@ import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
 import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.render.ViewType;
@@ -64,6 +63,7 @@ public class CommonConfig extends JFinalConfig {
 		paramMap.put(Constant.config_securityKey_key, getProperty(Constant.config_securityKey_key).trim());
 		paramMap.put(Constant.config_passErrorCount_key, getPropertyToInt(Constant.config_passErrorCount_key, 3));
 		paramMap.put(Constant.config_passErrorHour_key, getPropertyToInt(Constant.config_passErrorHour_key, 3));
+		paramMap.put(Constant.config_sessionMin_key, getPropertyToInt(Constant.config_sessionMin_key, 30));
 
 		paramMap.put(Constant.js_version_key, getProperty(Constant.js_version_key).trim());
 		

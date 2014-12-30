@@ -154,10 +154,10 @@ public class ContextUtils {
 	 * 
 	 * @return
 	 */
-	public static Winner getCurrentUser(HttpServletRequest request) {
-		String loginCookie = WebUtils.getCookieValueByName(request, "stoken");
-		if (null != loginCookie && !loginCookie.equals("")) {
-			String[] datas = ContextUtils.decodeCookieAuthToken(loginCookie);
+	public static Winner getCurrentUser(HttpServletRequest request, HttpServletResponse response) {
+		Cookie loginCookie = WebUtils.getCookieByName(request, "stoken");
+		if (null != loginCookie && !StringUtils.isEmpty(loginCookie.getValue())) {
+			String[] datas = ContextUtils.decodeCookieAuthToken(loginCookie.getValue());
 
 			if(null == datas || datas.length != 4) {
 				return null;
@@ -173,14 +173,13 @@ public class ContextUtils {
 
 			Date start = new Date();
 			start.setTime(loginDateTimes);
-			int day = DateUtils.getDateDaySpace(start, new Date());
+			
+			int intervalMins = DateUtils.getDateDaySpace(start, new Date()); //间隔分钟数
+			int sessionMins = (Integer) CommonConfig.getParamMapValue(Constant.config_passErrorCount_key);
 
 			if (ip.equals(newIp) && userAgent.equals(newUserAgent)
-					&& day <= 365) {
+					&& intervalMins <= sessionMins) {
 				
-				//TODO 365时间需要修改一下
-					// 是不是每次验证通过以后都要修改一下cookie中的时间值？？？
-
 				EhcacheFactoryUtils cacheFactory = EhcacheFactoryUtils
 						.getInstance();
 				Object winner = cacheFactory.get(
@@ -188,7 +187,13 @@ public class ContextUtils {
 						ParamInit.cacheStart_winner + uid);
 
 				if (null != winner) {
-					return (Winner) winner;
+					Winner w = (Winner) winner;
+					//重新更新cookie中的时间
+					boolean autoLogin = loginCookie.getMaxAge() > 0 ? true : false;
+					setCurrentUser(request, response, w, autoLogin);
+					
+					log.info(">>>>>>>>>>>>>> 重新更新了cookie中的用户信息");
+					return w;
 				}
 
 			}
@@ -204,6 +209,7 @@ public class ContextUtils {
 	 */
 	public static void setCurrentUser(HttpServletRequest request,
 			HttpServletResponse response, Winner winner, boolean autoLogin) {
+		
 		int maxAgeTemp = -1;
 		if (autoLogin) {
 			maxAgeTemp = 3600 * 24 * 15;// 15天

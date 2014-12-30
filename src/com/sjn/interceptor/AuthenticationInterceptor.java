@@ -1,6 +1,7 @@
 package com.sjn.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
@@ -23,8 +24,9 @@ public class AuthenticationInterceptor implements Interceptor {
 		
 		BaseController contro = (BaseController) ai.getController();
 		HttpServletRequest request = contro.getRequest();
+		HttpServletResponse response = contro.getResponse();
 		
-		Winner obj = ContextUtils.getCurrentUser(request);
+		Winner obj = ContextUtils.getCurrentUser(request, response);
 		
 		if(null == obj) {
 			

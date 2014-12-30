@@ -20,6 +20,11 @@ public class Constant {
 	public static final String config_passErrorHour_key = "config.passErrorHour";
 	
 	/**
+	 * session 时间 （分钟）
+	 */
+	public static final String config_sessionMin_key = "config.sessionMin";
+	
+	/**
 	 * js 版本信息
 	 */
 	public static final String js_version_key = "js.version";

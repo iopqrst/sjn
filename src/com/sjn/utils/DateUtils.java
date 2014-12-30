@@ -93,20 +93,32 @@ public class DateUtils {
 	/**
 	 * 返回两个日期之间隔了多少小时
 	 * 
-	 * @param date1
-	 * @param end
+	 * @param start 开始时间
+	 * @param end 结束时间
+	 * @return
+	 */
+	public static int getMinutesSpace(Date start, Date end) {
+		int mins = (int)((end.getTime() - start.getTime()) / (1000 * 60));
+		return mins;
+	}
+	
+	/**
+	 * 返回两个日期之间隔了多少小时
+	 * 
+	 * @param start 开始时间
+	 * @param end 结束时间
 	 * @return
 	 */
 	public static int getDateHourSpace(Date start, Date end) {
-		int hour = (int) ((start.getTime() - end.getTime()) / 3600 / 1000);
+		int hour = (int) ((end.getTime() - start.getTime()) / 3600 / 1000);
 		return hour;
 	}
 
 	/**
 	 * 返回两个日期之间隔了多少天
 	 * 
-	 * @param date1
-	 * @param end
+	 * @param 开始时间
+	 * @param 结束时间
 	 * @return
 	 */
 	public static int getDateDaySpace(Date start, Date end) {
@@ -193,13 +205,27 @@ public class DateUtils {
 	}
 
 	public static void main(String[] args) throws ParseException {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		/*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date start = formatter.parse("2013-07-01 01:00:00");
 		Date end = formatter.parse("2013-07-01 12:00:00");
 		long splitCount = 12l;
 		List<Date> list = getDateSplit(start, end, splitCount);
 		for (Date date : list) {
 			System.out.println(formatter.format(date));
+		}*/
+		
+		Date start = new Date();
+		
+		
+		try {
+			Thread.sleep(1000 * 73);
+			
+			Date end = new Date();
+			int a = getMinutesSpace(end, start);
+			System.out.println(a);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

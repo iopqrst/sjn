@@ -95,7 +95,7 @@ public class WinnerService extends BaseService {
 		
 		if (errorCount >= passErrorCount) {
 			Date stopDate = winner.getDate("forbidTime");
-			int hourSpace = DateUtils.getDateHourSpace(new Date(), stopDate);
+			int hourSpace = DateUtils.getDateHourSpace(stopDate, new Date());
 			int passErrorHour = (Integer) CommonConfig
 					.getParamMapValue(Constant.config_passErrorHour_key);
 			if (hourSpace < passErrorHour) {
