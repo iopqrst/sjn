@@ -26,7 +26,11 @@ public class AuthenticationInterceptor implements Interceptor {
 		HttpServletRequest request = contro.getRequest();
 		HttpServletResponse response = contro.getResponse();
 		
-		Winner obj = ContextUtils.getCurrentUser(request, response);
+		String uri = request.getRequestURI();
+		
+		log.info(">>>>>>>>>>>>>> uri = " + uri); 
+		
+		Winner obj = ContextUtils.getCurrentUser(request, response, true);
 		
 		if(null == obj) {
 			
@@ -35,7 +39,6 @@ public class AuthenticationInterceptor implements Interceptor {
 				contro.renderNull();
 				return;
 			} else {
-				String uri = request.getRequestURI(); //uri 会把项目名称也打印出来，而指向域名后没有项目名会导致页面404
 		
 				if(-1 != uri.indexOf("/sjn")) {
 					System.out.print("--->" + ContextUtils.getContextAllPath(request));

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="x11" uri="/WEB-INF/tlds/x11.tld"%>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
@@ -38,7 +39,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li>
 						<a href="javascript:void(0);">您好，欢迎 &nbsp;
-							${cookieMap.mobile.value }</a>
+							<x11:des fn="decrypt" value="${cookieMap.sid.value }"/></a>
 					</li>
 					<li>
 						<a id="S_life_list" href="javascript:void(0);">事件列表</a>

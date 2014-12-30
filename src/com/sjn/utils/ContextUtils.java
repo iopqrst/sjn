@@ -57,9 +57,10 @@ public class ContextUtils {
 	 */
 	public static String getContextAllPath(HttpServletRequest request) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(request.getScheme()).append("://").append(
-				request.getServerName()).append(":").append(
-				request.getServerPort()).append(request.getContextPath());
+		sb.append(request.getScheme()).append("://")
+				.append(request.getServerName()).append(":")
+				.append(request.getServerPort())
+				.append(request.getContextPath());
 		String path = sb.toString();
 		sb = null;
 		return path;
@@ -150,19 +151,60 @@ public class ContextUtils {
 	}
 
 	/**
-	 * 获取当前登录用户
+	 * 获取登陆用户的信息
 	 * 
+	 * <pre>
+	 * 从cookie中获取手机号，然后根据手机号获取用户的信息，其实 getCurrentUser 也可以，但是
+	 * 每次都要解析一大长串，为了效率，所有改为直接使用手机号获取
+	 * </pre>
+	 * 
+	 * @param request
 	 * @return
 	 */
-	public static Winner getCurrentUser(HttpServletRequest request, HttpServletResponse response) {
+	public static Winner getLoginUser(HttpServletRequest request) {
+		
+		Cookie mobileCookie = WebUtils.getCookieByName(request, "sid");
+		if (null != mobileCookie && !StringUtils.isEmpty(mobileCookie.getValue())) {
+			EhcacheFactoryUtils cacheFactory = EhcacheFactoryUtils
+					.getInstance();
+			
+			try {
+				DESUtil des = new DESUtil();
+				String mobile = des.decrypt(mobileCookie.getValue());
+				
+				Object winner = cacheFactory.get(
+						EhcacheFactoryUtils.cache_name_system,
+						ParamInit.cacheStart_winner + mobile);
+				
+				if (null != winner) {
+					return (Winner) winner;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 获取当前登录用户
+	 * 
+	 * @param changeCookie
+	 *            是否要修改cookie的值
+	 * @return
+	 */
+	public static Winner getCurrentUser(HttpServletRequest request,
+			HttpServletResponse response, boolean changeCookie) {
+
 		Cookie loginCookie = WebUtils.getCookieByName(request, "stoken");
 		if (null != loginCookie && !StringUtils.isEmpty(loginCookie.getValue())) {
-			String[] datas = ContextUtils.decodeCookieAuthToken(loginCookie.getValue());
+			String[] datas = ContextUtils.decodeCookieAuthToken(loginCookie
+					.getValue());
 
-			if(null == datas || datas.length != 4) {
+			if (null == datas || datas.length != 4) {
 				return null;
 			}
-			
+
 			String uid = datas[0];// 用户id
 			long loginDateTimes = Long.parseLong(datas[1]);// 时间戳
 			String ip = datas[2];// ip地址
@@ -173,13 +215,17 @@ public class ContextUtils {
 
 			Date start = new Date();
 			start.setTime(loginDateTimes);
-			
-			int intervalMins = DateUtils.getDateDaySpace(start, new Date()); //间隔分钟数
-			int sessionMins = (Integer) CommonConfig.getParamMapValue(Constant.config_passErrorCount_key);
+
+			int intervalMins = DateUtils.getMinutesSpace(start, new Date()); // 间隔分钟数
+			int sessionMins = (Integer) CommonConfig
+					.getParamMapValue(Constant.config_sessionMin_key);
+
+			log.info(">>>>>>>> session mins = " + sessionMins
+					+ ", intervalMins = " + intervalMins);
 
 			if (ip.equals(newIp) && userAgent.equals(newUserAgent)
 					&& intervalMins <= sessionMins) {
-				
+
 				EhcacheFactoryUtils cacheFactory = EhcacheFactoryUtils
 						.getInstance();
 				Object winner = cacheFactory.get(
@@ -188,11 +234,15 @@ public class ContextUtils {
 
 				if (null != winner) {
 					Winner w = (Winner) winner;
-					//重新更新cookie中的时间
-					boolean autoLogin = loginCookie.getMaxAge() > 0 ? true : false;
-					setCurrentUser(request, response, w, autoLogin);
-					
-					log.info(">>>>>>>>>>>>>> 重新更新了cookie中的用户信息");
+
+					if (changeCookie) {
+						// 重新更新cookie中的时间
+						boolean autoLogin = loginCookie.getMaxAge() > 0 ? true
+								: false;
+						setCurrentUser(request, response, w, autoLogin);
+
+						log.info(">>>>>>>>>>>>>> 重新更新了cookie中的用户信息");
+					}
 					return w;
 				}
 
@@ -209,26 +259,34 @@ public class ContextUtils {
 	 */
 	public static void setCurrentUser(HttpServletRequest request,
 			HttpServletResponse response, Winner winner, boolean autoLogin) {
-		
+
 		int maxAgeTemp = -1;
 		if (autoLogin) {
 			maxAgeTemp = 3600 * 24 * 15;// 15天
 		}
 
-		// 用户名cookie
-		Cookie userName = new Cookie("mobile", winner.getStr("mobile"));
-		userName.setMaxAge(maxAgeTemp);
-		userName.setPath("/");
-		response.addCookie(userName);
-		
+		try {
+			DESUtil des = new DESUtil();
+			String encryptMobile = des.encrypt(winner.getStr("mobile"));
+
+			// 用户名cookie
+			Cookie userName = new Cookie("sid", encryptMobile);
+			userName.setMaxAge(maxAgeTemp);
+			userName.setPath("/");
+			response.addCookie(userName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		// uid cookie
-//		Cookie uidCookie = new Cookie("uid", winner.getStr("uid"));
-//		uidCookie.setMaxAge(maxAgeTemp);
-//		uidCookie.setPath("/");
-//		response.addCookie(uidCookie);
+		// Cookie uidCookie = new Cookie("uid", winner.getStr("uid"));
+		// uidCookie.setMaxAge(maxAgeTemp);
+		// uidCookie.setPath("/");
+		// response.addCookie(uidCookie);
 
 		// 登陆认证cookie
-		String authToken = ContextUtils.getCookieAuthToken(request, winner.getStr("uid"));
+		String authToken = ContextUtils.getCookieAuthToken(request,
+				winner.getStr("uid"));
 		WebUtils.addCookie(response, "stoken", authToken, maxAgeTemp);
 	}
 

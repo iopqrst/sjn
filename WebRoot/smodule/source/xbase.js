@@ -82,8 +82,6 @@ define(function(require, exports, module) {
     		 * @function 打开设置时间轴范围的对话框
     		 */
     		function openSettingTimelineDialog() {
-
-    			$("#S_timeline_setting_dialog").modal('show');
     			
     			$.blockUI();
     			$.ajax({
@@ -91,6 +89,7 @@ define(function(require, exports, module) {
     				dataType:'json',
     				success:function(result){
     					if(result && result.beginPolt) {
+    						$("#S_timeline_setting_dialog").modal('show'); //有数据才打开，否则出现闪屏
     						$(":input[name='iloveyou']").val(result.id);
     						
     						$(":input[name='sbeginPolt']").selectpicker('val', result.beginPolt);

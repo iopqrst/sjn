@@ -22,7 +22,7 @@ public class BaseController extends Controller {
 	 * @return
 	 */
 	protected Winner getLoginUser() {
-		return ContextUtils.getCurrentUser(getRequest(), getResponse());
+		return ContextUtils.getLoginUser(getRequest());
 	}
 	
 	protected String getLoginUid() {
