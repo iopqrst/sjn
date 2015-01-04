@@ -56,7 +56,7 @@ public class RegisterController extends BaseController {
 	 * 发送短信验证码，保存到数据库中
 	 */
 	public void sendVcode() {
-		renderJson(codeService.sendVcode(getPara("mobile")));
+		renderJson(codeService.sendVcode(getPara("mobile") , "reg"));
 	}
 	
 	/**

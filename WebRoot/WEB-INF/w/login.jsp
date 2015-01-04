@@ -41,7 +41,7 @@
 									<span class="glyphicon glyphicon-phone"></span></label>
 									<input tabindex="1" type="text" class="form-control" 
 										id="userphone" name="mobile" value="${mobile }" 
-										placeholder="请输入您的手机号码" autocomplete="off"/>
+										placeholder="手机号码" autocomplete="off"/>
 								</div>
 							</div>
 						</div>
@@ -51,14 +51,15 @@
 									<label for="password" class="control-label fa-label">
 									<span class="glyphicon glyphicon-lock"></span></label> 
 									<input tabindex="2" type="password" name="password"
-										class="form-control" id="password" placeholder="请输入您的登录密码"/>
+										class="form-control" id="password" placeholder="登录密码"/>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-md-12">
 								<div class="checkbox control-wrapper">
-									<label><input type="checkbox" id="S_rememberme"/>记住密码 </label>
+									<input type="checkbox" id="S_rememberme"/><label for="S_rememberme">记住密码 </label>
+									<input type="hidden" name="remember"/>
 								</div>
 							</div>
 						</div>
@@ -66,14 +67,14 @@
 							<div class="col-md-12">
 								<div class="control-wrapper">
 									<input type="button" id="S_page_login" value="登&nbsp;&nbsp;录" class="btn btn-success">
-									<a href="/forgotPwd" class="text-right pull-right">忘记密码？</a>
+									<a href="javascript:alert('Hello world');return;" class="text-right pull-right">忘记密码？</a>
 								</div>
 							</div>
 						</div>
 					</form>
 					<div class="text-center">
 						<a href="/reg" class="templatemo-create-new">
-						注册 ShiJianNe <span class="glyphicon glyphicon-hand-right"></span>
+						注册 shijianne.com <span class="glyphicon glyphicon-hand-right"></span>
 						</a>
 					</div>
 				</div>

@@ -8,6 +8,10 @@ org.eclipse.wst.common.component
 org.eclipse.wst.common.project.facet.core.xml
 org.eclipse.wst.jsdt.ui.superType.container
 org.eclipse.wst.jsdt.ui.superType.name
+WebRoot/[0-9]*
+WebRoot/[0-9]*/*
+WebRoot/META-INF
+WebRoot/META-INF/*
 WebRoot/META-INF/MANIFEST.MF
 WebRoot/WEB-INF/classes/
 WebRoot/WEB-INF/lib/

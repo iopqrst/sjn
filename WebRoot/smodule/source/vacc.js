@@ -9,6 +9,13 @@ define(function(require, exports, module) {
 	var $mobile = $(":input[name='mobile']");
 	var $password = $(":input[name='password']");
 	var $vcode = $(":input[name='vcode']");
+	
+	var VALID_STATE = {
+		exception : -1,	//异常时
+		init	  : 0,  //初始值
+		fail	  : 1,	// 验证失败
+		success	  : 2 	//验证通过
+	};
 
 	var validMsg = {
 		mobile : {
@@ -30,9 +37,19 @@ define(function(require, exports, module) {
 	var validateFn = {
 		onFocus : {
 			run : function($obj, msg) {
+				
+				if(!$.trim($obj.val())) {
+					return; //不等于空就不要继续向下执行
+				}
+
 				var vstate = $obj.data('v_state');
-				if (vstate)
-					return;
+				
+				// 如果vstate存在值，则onFocus事件不会去修改它的值
+				// 如果vstate不存在值，赋值初始值
+				if (!vstate) { 
+					$obj.data('vstate', VALID_STATE.init);
+				}
+				
 				if (msg) {
 					validateFn.createTips($obj, msg);
 				}
@@ -40,7 +57,7 @@ define(function(require, exports, module) {
 		},
 		error : {
 			run : function($obj, msg) {
-				$obj.data('v_state', 1);
+				$obj.data('v_state', VALID_STATE.fail);
 				if (msg) {
 					validateFn.createTips($obj, msg);
 				}
@@ -48,7 +65,7 @@ define(function(require, exports, module) {
 		},
 		succeed : {
 			run : function($obj, msg) {
-				$obj.data('v_state', 2);
+				$obj.data('v_state', VALID_STATE.success);
 			}
 		},
 		createTips : function($obj, msg) { //
@@ -96,7 +113,7 @@ define(function(require, exports, module) {
 
 				},
 				error : function() {
-					$mobile.data('v_state', -1); // 异常
+					$mobile.data('v_state', VALID_STATE.exception); // 异常
 				}
 			});
 		},
@@ -129,6 +146,7 @@ define(function(require, exports, module) {
 					}
 				},
 				error : function() {
+					$mobile.data('v_state', VALID_STATE.exception); // 异常
 					$.unblockUI();
 				}
 			});
@@ -161,14 +179,14 @@ define(function(require, exports, module) {
 
 				},
 				error : function() {
-					$vcode.data('v_state', -1); // 异常
+					$vcode.data('v_state', VALID_STATE.exception); // 异常
 				}
 			});
 		},
 		formSubmit : function($eles) { // 表单提交
 			var bool = true;
 			for (var i = 0; i < $eles.length; i++) {
-				if ($eles[i].data("v_state") == 2) { // 所有v_state = 2时 ，验证通过
+				if ($eles[i].data("v_state") == VALID_STATE.success) { // 所有v_state = 2时 ，验证通过
 					bool = true;
 				} else {
 					bool = false;
@@ -303,9 +321,12 @@ define(function(require, exports, module) {
 		// 登陆页面
 		if ('login' === page) {
 			$password.on("keydown", function(ev) {
-				console.info(ev.which);
+				//console.info(ev.which);
 				if(ev.which === 13) {
-					//$("#S_page_login").trigger('click');
+					$password.trigger('blur');
+					setTimeout(function() {
+						$("#S_page_login").trigger('click');
+					}, 100);
 				}
 			});
 
@@ -313,6 +334,11 @@ define(function(require, exports, module) {
 				if (validateFn.formSubmit([ $mobile, $password ])) {
 					document.forms[0].submit();
 				}
+			});
+			
+			$("#S_rememberme").click(function(){
+				var r = $(this).get(0).checked ? 1 : 0; //1勾选记住密码
+				$(":input[name='remember']").val(r);
 			});
 		}
 

@@ -22,9 +22,10 @@ public class VcodeService extends BaseService {
 	 * 发送保存验证码
 	 * 
 	 * @param mobile
+	 * @param source : ["reg", "login"] 发送短信验证码的来源
 	 * @return
 	 */
-	public String sendVcode(String mobile) {
+	public String sendVcode(String mobile, String source) {
 		JSONObject jo = new JSONObject();
 
 		if (StringUtils.isEmpty(mobile)) {
@@ -39,6 +40,18 @@ public class VcodeService extends BaseService {
 			return jo.toString();
 		}
 
+		// 如果是注册时发送的短信校验码需要判断一下手机号是否已经注册过
+		if("reg".equals(source)) {
+			String winSql = "select count(*) total from sjn_winner where mobile = ?";
+			Record record = Db.findFirst(winSql, new Object[] { mobile});
+			
+			if (record.getLong("total") >= 1) {
+				jo.put("code", Constant.INTERFACE_FAIL);
+				jo.put("msg", "手机号已注册");
+				return jo.toString();
+			}
+		}
+		
 		// 1. 从数据库中获取该手机号用户在10分钟之内发送短信次数
 		// 如果小于等于5，则可以再次发送，否则告知页面发送短信频繁
 

@@ -3,6 +3,7 @@ package com.sjn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.ClearInterceptor;
 import com.sjn.constant.Constant;
+import com.sjn.service.VcodeService;
 import com.sjn.service.WinnerService;
 import com.sjn.utils.StringUtils;
 import com.sjn.utils.WebUtils;
@@ -11,6 +12,7 @@ import com.sjn.utils.WebUtils;
 public class LoginController extends BaseController {
 
 	WinnerService winnerService = new WinnerService();
+	VcodeService codeService = new VcodeService(); //短信验证码
 
 	public void index() {
 		setAttr("hideNavLogin", true);
@@ -79,5 +81,12 @@ public class LoginController extends BaseController {
 		WebUtils.addCookie(getResponse(), "stoken", null, 0);
 		WebUtils.addCookie(getResponse(), "mobile", null, 0);
 		redirect("/");
+	}
+	
+	/**
+	 * 发送短信验证码，保存到数据库中
+	 */
+	public void sendVcode() {
+		renderJson(codeService.sendVcode(getPara("mobile") , "login"));
 	}
 }
