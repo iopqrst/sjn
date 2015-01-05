@@ -67,7 +67,7 @@
 							<div class="col-md-12">
 								<div class="control-wrapper">
 									<input type="button" id="S_page_login" value="登&nbsp;&nbsp;录" class="btn btn-success">
-									<a href="javascript:alert('Hello world');return;" class="text-right pull-right">忘记密码？</a>
+									<a href="javascript:alert('Hello world');" class="text-right pull-right">忘记密码？</a>
 								</div>
 							</div>
 						</div>

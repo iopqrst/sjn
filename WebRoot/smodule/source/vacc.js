@@ -37,8 +37,8 @@ define(function(require, exports, module) {
 	var validateFn = {
 		onFocus : {
 			run : function($obj, msg) {
-				
-				if(!$.trim($obj.val())) {
+
+				if($.trim($obj.val()).length != 0) {
 					return; //不等于空就不要继续向下执行
 				}
 

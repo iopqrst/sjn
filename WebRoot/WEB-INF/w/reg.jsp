@@ -79,13 +79,6 @@
 						</div>
 						<div class="form-group">
 							<div class="col-md-12">
-								<div class="checkbox control-wrapper">
-									<label><input type="checkbox" id="S_rememberme"/>记住密码 </label>
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-12">
 								<div class="control-wrapper text-center">
 									<input type="button" id="S_reg_page" value="注&nbsp;&nbsp;册" class="btn btn-success">
 								</div>
@@ -99,22 +92,6 @@
 					</div>
 				</div>
 			</div>
-			<!-- 
-			<form class="form-signin" role="form" action="/reg/doReg" method="post">
-				<h2 class="form-signin-heading text-center">
-					注&nbsp;&nbsp;册
-				</h2>
-				<input tabindex="1" type="text" name="mobile" class="form-control" placeholder="请输入您的手机号码" autocomplete="off"/>
-				<input tabindex="2" type="text" name="mobile" class="form-control" placeholder="这里是图形验证码" autocomplete="off"/>
-				<input tabindex="3" type="text" name="vcode" class="form-control" placeholder="请输入您的邀请码" autocomplete="off"/><a href="javascript:void(0);" class="S_send_vcode">发送短信验证码</a>
-				<input tabindex="4" type="password" name="password" class="form-control" placeholder="请输入您的密码" autocomplete="off"/>
-				<div class="text-center form-group">
-					<button id="S_reg_page" class="btn btn-lg btn-success btn-inline" type="button">
-						&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;册&nbsp;&nbsp;ShiJianNe
-					</button>&nbsp; <a href="/login">登 录</a>
-				</div>
-			</form>
-			 -->
 			<div class="alert alert-danger" role="alert" style="display:none">
 				<strong>我们承诺：</strong>
 				<p>1、我们将尽力的保护用户的信息，丢失意味着丧失尊严</p>

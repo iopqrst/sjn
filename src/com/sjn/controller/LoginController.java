@@ -79,7 +79,7 @@ public class LoginController extends BaseController {
 	 */
 	public void logout() {
 		WebUtils.addCookie(getResponse(), "stoken", null, 0);
-		WebUtils.addCookie(getResponse(), "mobile", null, 0);
+		WebUtils.addCookie(getResponse(), "sid", null, 0);
 		redirect("/");
 	}
 	
