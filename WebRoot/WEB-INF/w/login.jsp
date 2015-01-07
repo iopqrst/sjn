@@ -29,13 +29,13 @@
 			</c:if>
 	
 			<div class="container">
-				<div class="col-md-12">
+				<div class="col-md-12 col-sm-12">
 					<h1 class="margin-bottom-15">登&nbsp;&nbsp;录</h1>
 					<form
 						class="form-horizontal templatemo-container templatemo-login-form-1 margin-bottom-30"
 						role="form" method="post" action="/login/login?toUrl=${param.toUrl }">
 						<div class="form-group">
-							<div class="col-xs-12">
+							<div class="col-xs-12 col-sm-12">
 								<div class="control-wrapper">
 									<label for="userphone" class="control-label fa-label">
 									<span class="glyphicon glyphicon-phone"></span></label>
@@ -46,7 +46,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<div class="col-md-12">
+							<div class="col-md-12 col-sm-12">
 								<div class="control-wrapper">
 									<label for="password" class="control-label fa-label">
 									<span class="glyphicon glyphicon-lock"></span></label> 
@@ -56,7 +56,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<div class="col-md-12">
+							<div class="col-md-12 col-sm-12">
 								<div class="checkbox control-wrapper">
 									<input type="checkbox" id="S_rememberme"/><label for="S_rememberme">记住密码 </label>
 									<input type="hidden" name="remember"/>
@@ -64,7 +64,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<div class="col-md-12">
+							<div class="col-md-12 col-sm-12">
 								<div class="control-wrapper">
 									<input type="button" id="S_page_login" value="登&nbsp;&nbsp;录" class="btn btn-success">
 									<a href="javascript:alert('Hello world');" class="text-right pull-right">忘记密码？</a>

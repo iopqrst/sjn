@@ -5,7 +5,8 @@ define(function(require, exports, module) {
 
 	var $ = require('jquery');
 	var x = require('./xbase');
-
+			require('storage');
+	
 	var $mobile = $(":input[name='mobile']");
 	var $password = $(":input[name='password']");
 	var $vcode = $(":input[name='vcode']");
@@ -320,6 +321,26 @@ define(function(require, exports, module) {
 
 		// 登陆页面
 		if ('login' === page) {
+			
+			// 账号密码读取
+			var _ntoken = localStorage.getItem("ntoken");
+			var _nexpires = localStorage.getItem("nexpires");
+			var _nkeys = localStorage.getItem("nkeys");
+			
+			var _current = new Date().getTime();
+			
+			if(_current > _nexpires) { // 如果当前时间大于失效时间则失效，清空localStorage
+				localStorage.removeItem("ntoken");
+				localStorage.removeItem("nexpires");
+				localStorage.removeItem("nkeys");
+			} else {
+				$mobile.val(_ntoken);
+				$password.val(_nkeys);
+				
+				$("#S_rememberme").get(0).checked = true;
+				$(":input[name='remember']").val(1); //记住密码的选项
+			}
+			
 			$password.on("keydown", function(ev) {
 				//console.info(ev.which);
 				if(ev.which === 13) {
@@ -332,6 +353,15 @@ define(function(require, exports, module) {
 
 			$("#S_page_login").on('click', function() {
 				if (validateFn.formSubmit([ $mobile, $password ])) {
+					
+					// 勾选了记住密码，并且没有保存过登录信息
+					if(1 == $(":input[name='remember']").val() 
+							&& !localStorage.getItem("ntoken")) {
+						localStorage.setItem("ntoken",$mobile.val());
+						localStorage.setItem("nexpires",(new Date().getTime() + 1000 * 60 * 60 * 24 * 15));
+						localStorage.setItem("nkeys",$password.val());
+					}
+					
 					document.forms[0].submit();
 				}
 			});

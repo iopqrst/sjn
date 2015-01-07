@@ -13,7 +13,8 @@
 			"bootstrap": "jplugin/bootstrap",
 			"cycleLite": "jplugin/cycleLite",
 			"pagination": "jplugin/pagination",
-			"colorPicker": "jplugin/colorPicker"
+			"colorPicker": "jplugin/colorPicker",
+			"storage": "jplugin/storage"
 		}
 	},
 	"devDependencies": {

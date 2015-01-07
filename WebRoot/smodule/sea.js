@@ -13,6 +13,7 @@
 			'cycleLite' : 'jplugin/cycleLite',
 			'pagination' : 'jplugin/pagination',
 			'colorPicker' : 'jplugin/colorPicker',
+			'storage' : 'jplugin/storage'
 		}
 	});
 	
