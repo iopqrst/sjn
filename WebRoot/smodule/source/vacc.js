@@ -314,6 +314,16 @@ define(function(require, exports, module) {
 					document.forms[0].submit();
 				}
 			});
+			
+			// 行不通， 初步考虑是因为ajax未完成导致验证状态未发生变化
+//			$vcode.on("keydown", function(ev) {
+//				if(ev.which === 13) {
+//					$vcode.trigger('blur');
+//					setTimeout(function() {
+//						$("#S_reg_page").trigger('click');
+//					}, 100);
+//				}
+//			});
 		}
 
 		// 登陆页面
@@ -339,6 +349,9 @@ define(function(require, exports, module) {
 					
 					$("#S_rememberme").get(0).checked = true;
 					$(":input[name='remember']").val(1); //记住密码的选项
+					
+					$mobile.trigger('blur'); // fix 无触发验证事件bug(点击两次登陆按钮，回车提交同理）
+					$password.trigger('blur'); // 
 				} else {
 					localStorage.removeItem("ntoken");
 					localStorage.removeItem("nexpires");
@@ -364,7 +377,8 @@ define(function(require, exports, module) {
 							&& !localStorage.getItem("ntoken")) {
 						
 						localStorage.setItem("ntoken",_e.jencode($mobile.val()));
-						localStorage.setItem("nexpires",_e.jencode((new Date().getTime() + 1000 * 60 * 60 * 24 * 15)));
+						var _t = (new Date().getTime() + 1000 * 60 * 60 * 24 * 15 + '');
+						localStorage.setItem("nexpires",_e.jencode(_t));
 						localStorage.setItem("nkeys",_e.jencode($password.val()));
 					}
 					

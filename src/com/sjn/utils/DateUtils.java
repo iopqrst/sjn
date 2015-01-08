@@ -203,6 +203,34 @@ public class DateUtils {
 		cal.set(Calendar.MINUTE, minute);
 		return cal.getTime();
 	}
+	
+	/**
+	 * 获取包含当前天在内的一周日期
+	 * @return 数组
+	 */
+	public static List<String> getLastestDays(int day) {
+		
+		Calendar cal = Calendar.getInstance();
+		String s = cnFormat(cal.getTime());
+		System.out.println(s);
+		
+		cal.set(Calendar.DAY_OF_YEAR, -1);
+		
+		String s2 = cnFormat(cal.getTime());
+		System.out.println(s2);
+		
+		
+		
+		List<String> dates = new ArrayList<String>();
+		
+		for(int i = 0; i < day ; i++) {
+			Calendar cal2 = Calendar.getInstance();
+			cal2.set(Calendar.DAY_OF_YEAR, -i);
+			dates.add(cnFormat(cal2.getTime()));
+		}
+		
+		return dates;
+	}
 
 	public static void main(String[] args) throws ParseException {
 		/*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -214,18 +242,25 @@ public class DateUtils {
 			System.out.println(formatter.format(date));
 		}*/
 		
-		Date start = new Date();
+//		Date start = new Date();
+//		
+//		
+//		try {
+//			Thread.sleep(1000 * 73);
+//			
+//			Date end = new Date();
+//			int a = getMinutesSpace(end, start);
+//			System.out.println(a);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		
-		try {
-			Thread.sleep(1000 * 73);
-			
-			Date end = new Date();
-			int a = getMinutesSpace(end, start);
-			System.out.println(a);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		List<String> dates = getLastestDays(5);
+		System.out.println(dates.size());
+		for (String str : dates) {
+			System.out.println(str);
 		}
 	}
 }
