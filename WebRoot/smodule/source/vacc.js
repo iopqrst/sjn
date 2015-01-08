@@ -297,10 +297,6 @@ define(function(require, exports, module) {
 
 			$("#S_get_vcode").on('click', validateFn.sendVcode);
 
-//			$vcode.on("keydown", function() {
-//				$("#S_reg_page").trigger('click');
-//			});
-
 			$vcode.on('focus', function() {
 				validateFn.onFocus.run($vcode, validMsg.code.empty);
 			});
@@ -337,21 +333,21 @@ define(function(require, exports, module) {
 
 				var _current = new Date().getTime();
 				
-				if(!isNaN(_nexpires) && _current > _nexpires) { // 如果当前时间大于失效时间则失效，清空localStorage
-					localStorage.removeItem("ntoken");
-					localStorage.removeItem("nexpires");
-					localStorage.removeItem("nkeys");
-				} else {
+				if(!isNaN(_nexpires) && (_current <= _nexpires)) {
 					$mobile.val(_ntoken);
 					$password.val(_nkeys);
 					
 					$("#S_rememberme").get(0).checked = true;
 					$(":input[name='remember']").val(1); //记住密码的选项
+				} else {
+					localStorage.removeItem("ntoken");
+					localStorage.removeItem("nexpires");
+					localStorage.removeItem("nkeys");
 				}
+				
 			}
 			
 			$password.on("keydown", function(ev) {
-				//console.info(ev.which);
 				if(ev.which === 13) {
 					$password.trigger('blur');
 					setTimeout(function() {
