@@ -6,6 +6,7 @@ define(function(require, exports, module) {
 	var $ = require('jquery');
 	var x = require('./xbase');
 			require('storage');
+	var _e = require('encrypt'); //加载加解密脚本
 	
 	var $mobile = $(":input[name='mobile']");
 	var $password = $(":input[name='password']");
@@ -327,18 +328,26 @@ define(function(require, exports, module) {
 			var _nexpires = localStorage.getItem("nexpires");
 			var _nkeys = localStorage.getItem("nkeys");
 			
-			var _current = new Date().getTime();
-			
-			if(_current > _nexpires) { // 如果当前时间大于失效时间则失效，清空localStorage
-				localStorage.removeItem("ntoken");
-				localStorage.removeItem("nexpires");
-				localStorage.removeItem("nkeys");
-			} else {
-				$mobile.val(_ntoken);
-				$password.val(_nkeys);
+			if(null != _ntoken && null != _nexpires
+					&& null != _nkeys) {
 				
-				$("#S_rememberme").get(0).checked = true;
-				$(":input[name='remember']").val(1); //记住密码的选项
+				_ntoken = _e.jdecode(_ntoken);
+				_nexpires = _e.jdecode(_nexpires);
+				_nkeys = _e.jdecode(_nkeys);
+
+				var _current = new Date().getTime();
+				
+				if(!isNaN(_nexpires) && _current > _nexpires) { // 如果当前时间大于失效时间则失效，清空localStorage
+					localStorage.removeItem("ntoken");
+					localStorage.removeItem("nexpires");
+					localStorage.removeItem("nkeys");
+				} else {
+					$mobile.val(_ntoken);
+					$password.val(_nkeys);
+					
+					$("#S_rememberme").get(0).checked = true;
+					$(":input[name='remember']").val(1); //记住密码的选项
+				}
 			}
 			
 			$password.on("keydown", function(ev) {
@@ -357,9 +366,10 @@ define(function(require, exports, module) {
 					// 勾选了记住密码，并且没有保存过登录信息
 					if(1 == $(":input[name='remember']").val() 
 							&& !localStorage.getItem("ntoken")) {
-						localStorage.setItem("ntoken",$mobile.val());
-						localStorage.setItem("nexpires",(new Date().getTime() + 1000 * 60 * 60 * 24 * 15));
-						localStorage.setItem("nkeys",$password.val());
+						
+						localStorage.setItem("ntoken",_e.jencode($mobile.val()));
+						localStorage.setItem("nexpires",_e.jencode((new Date().getTime() + 1000 * 60 * 60 * 24 * 15)));
+						localStorage.setItem("nkeys",_e.jencode($password.val()));
 					}
 					
 					document.forms[0].submit();

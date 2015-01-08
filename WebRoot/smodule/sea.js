@@ -13,7 +13,8 @@
 			'cycleLite' : 'jplugin/cycleLite',
 			'pagination' : 'jplugin/pagination',
 			'colorPicker' : 'jplugin/colorPicker',
-			'storage' : 'jplugin/storage'
+			'storage': 'common/storage',
+			'encrypt': 'common/encrypt'
 		}
 	});
 	
