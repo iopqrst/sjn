@@ -38,16 +38,25 @@
 			
 			<form name="ItemModifyForm" action="/life/modify/<x11:des fn="encrypt" value="${item.lid}"/>" method="post" role="form">
 				<div class="form-group">
-					<label for="">
+					<label for="S_whichDay">
 						选择日期：
 					</label>
-					
+					<%--
+				      </div>
 					<div class="input-group">
 				      <div class="input-group-addon">
 				      	<span class="glyphicon glyphicon-calendar"></span>
-				      </div>
 					  <input type="text" readonly="readonly" class="form-control" id="S_whichDay" value="${item.whichDay }">
-				    </div>
+					   --%>
+					  <select id="S_whichDay" name="lifeItem.whichDay"
+								class="form-control selectpicker show-tick">
+						<c:forEach var="d" items="${dateList}">
+							<option value="${d }" <c:if test="${d == item.whichDay }"> selected="selected"</c:if>>
+								${d }
+							</option>
+						</c:forEach>
+					  </select>
+<!-- 				    </div> -->
 				</div>
 				
 				<div class="form-group">

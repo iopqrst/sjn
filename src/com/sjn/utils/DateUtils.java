@@ -209,24 +209,14 @@ public class DateUtils {
 	 * @return 数组
 	 */
 	public static List<String> getLastestDays(int day) {
-		
-		Calendar cal = Calendar.getInstance();
-		String s = cnFormat(cal.getTime());
-		System.out.println(s);
-		
-		cal.set(Calendar.DAY_OF_YEAR, -1);
-		
-		String s2 = cnFormat(cal.getTime());
-		System.out.println(s2);
-		
-		
-		
 		List<String> dates = new ArrayList<String>();
 		
-		for(int i = 0; i < day ; i++) {
-			Calendar cal2 = Calendar.getInstance();
-			cal2.set(Calendar.DAY_OF_YEAR, -i);
-			dates.add(cnFormat(cal2.getTime()));
+		Calendar cal = Calendar.getInstance();
+		dates.add(cnFormat(cal.getTime()));
+		
+		for(int i = 0; i < (day - 1) ; i++) {
+			cal.add(Calendar.DAY_OF_YEAR, -1);
+			dates.add(cnFormat(cal.getTime()));
 		}
 		
 		return dates;
@@ -257,7 +247,7 @@ public class DateUtils {
 //		}
 		
 		
-		List<String> dates = getLastestDays(5);
+		List<String> dates = getLastestDays(7);
 		System.out.println(dates.size());
 		for (String str : dates) {
 			System.out.println(str);

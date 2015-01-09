@@ -37,13 +37,19 @@
 					<label for="S_whichDay">
 						选择日期：
 					</label>
-					<div class="input-group">
-						<div class="input-group-addon">
+					<!-- <div class="form-group">
+						<div class="select-group-addon">
 							<span class="glyphicon glyphicon-calendar"></span>
-						</div>
-						<input type="text" class="form-control" id="S_whichDay"
-							name="lifeItem.whichDay" value="${current }" readonly="readonly">
-					</div>
+						</div> -->
+						<select id="S_whichDay" name="lifeItem.whichDay"
+								class="form-control selectpicker show-tick">
+							<c:forEach var="d" items="${dateList}">
+								<option value="${d }">
+									${d }
+								</option>
+							</c:forEach>
+						</select>
+					<!-- </div> -->
 				</div>
 
 				<div class="form-group">
@@ -99,7 +105,7 @@
 						</c:forEach>
 					</select>
 					&nbsp;
-					<a href="javascript:void(0);" id="S_cself">没有我想要的？</a>
+					<a href="javascript:void(0);" id="S_cself">没有想要的？</a>
 				</div>
 
 				<div class="form-group text-center">

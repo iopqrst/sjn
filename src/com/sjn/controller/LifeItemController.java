@@ -89,7 +89,7 @@ public class LifeItemController extends BaseController {
 
 		getDefaultTimeline(getLoginUid());
 
-		setAttr("current", DateUtils.cnFormat(new Date()));
+		setAttr("dateList", DateUtils.getLastestDays(7));
 
 		render("life_add.jsp");
 	}
@@ -136,6 +136,8 @@ public class LifeItemController extends BaseController {
 
 			getLifeCategory();
 			getWinnerTimeline();
+			
+			setAttr("dateList", DateUtils.getLastestDays(7));
 		} else {
 			setAttr("msg", "好像缺了点什么，没找到对应信息");
 		}
