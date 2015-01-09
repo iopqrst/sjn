@@ -136,8 +136,6 @@ public class LifeItemController extends BaseController {
 
 			getLifeCategory();
 			getWinnerTimeline();
-			
-			setAttr("dateList", DateUtils.getLastestDays(7));
 		} else {
 			setAttr("msg", "好像缺了点什么，没找到对应信息");
 		}
