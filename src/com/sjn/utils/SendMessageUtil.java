@@ -23,7 +23,7 @@ public class SendMessageUtil {
 		String tplValue = "";
 
 		try {
-			tplValue = URLEncoder.encode("#code#=" + code + "&#company#=时间呢",
+			tplValue = URLEncoder.encode("#code#=" + code + "&#company#=血糖高管",
 					"UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -39,7 +39,7 @@ public class SendMessageUtil {
 	}
 
 	public static void main(String[] args) {
-		sendVcode("18612834873", "19901117");
+		sendVcode("18612830000", "19901117");
 		
 //		String msg = "{\"code\":0,\"msg\":\"OK\",\"result\":{\"count\":1,\"fee\":1,\"sid\":1090852413}}";
 //		
