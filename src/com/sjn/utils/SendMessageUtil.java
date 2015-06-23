@@ -23,7 +23,7 @@ public class SendMessageUtil {
 		String tplValue = "";
 
 		try {
-			tplValue = URLEncoder.encode("#code#=" + code + "&#company#=血糖高管",
+			tplValue = URLEncoder.encode("#code#=" + code + "&#company#=时间呢",
 					"UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
